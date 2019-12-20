@@ -1,0 +1,48 @@
+name: lando-sage
+recipe: wordpress
+config:
+  webroot: .
+
+proxy:
+  theme:
+    - localhost:3000
+
+services:
+  database:
+    # offer a reliable port to local MySQL apps
+    portforward: 33060
+  appserver:
+    run:
+      # install dependencies
+      - cd /app && wp package install --quiet git@github.com:alwaysblank/blade-generate.git
+      - cd /app &&  wp package install --quiet wp-cli/find-command
+      - cd /app/wp-content/mu-plugins/to4-framework/ && composer install
+      - cd /app/wp-content/themes/truthout4/ && composer install
+  theme:
+    # https://docs.lando.dev/config/node.html#configuration
+    type: node
+    ports:
+      - '3000:3000'
+    run_as_root:
+      # solves libpng12-0 error on Sage < 9.0.0
+      # - cd /tmp && wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+      # - cd /tmp && dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
+    build: # do yarn stuff
+      - yarn config set disable-self-update-check true
+      - cd /app/wp-content/themes/truthout4/ && yarn install
+    run:
+     # - cd /app/wp-content/themes/truthout4/ && yarn start
+
+tooling:
+  yarn:
+    service: theme
+  install-deps:
+    description: Provides a 'lando install-deps' command to install all dependencies
+    cmd:
+      - appserver: cd $LANDO_WEBROOT/wp-content/mu-plugins/to4-framework && composer install
+      - appserver: cd $LANDO_WEBROOT/wp-content/themes/truthout4 && composer install
+      - theme: cd /app/wp-content/themes/truthout4 && yarn install
+  yarn-start:
+    description: Provides a 'lando yarn-start' to start browsersync
+    cmd:
+      - theme: cd /app/wp-content/themes/truthout4/ && yarn start
