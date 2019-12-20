@@ -1,5 +1,96 @@
-# ignore all
-*
+# ignore these core files and config:
+/wp-config.php
+/.htaccess
+/license.txt
+/readme.html
+/sitemap.*
+
+# ignore root files except for the ones we want:
+/*
+!wp-content/
+!dev_assets/
+!webicons/
+
+# ignore everything in the "wp-content" directory, except:
+# mu-plugins, and theme, annual report directories
+wp-content/*
+!wp-content/mu-plugins/
+!wp-content/plugins/
+!wp-content/themes/
+!wp-content/themes/lando-sage
+
+# ignore everything except for our project sub-subfolders and files:
+wp-content/plugins/*
+wp-content/themes/*
+!wp-content/themes/lando-sage
+wp-content/mu-plugins/*
+
+# ignore backstop_data except for engine_scripts:
+dev_assets/testing/visual-testing/backstop_data/*
+!dev_assets/testing/visual-testing/backstop_data/engine_scripts
+
+# ignore OS generated files
+*.DS_Store
+*[Tt]humbs.db
+*.Trashes
+ehthumbs.db
+
+# ignore node dependency directories anywhere
+node_modules/
+
+# ignore log files and databases anywhere
+*.log
+*.sql
+*.sqlite
+
+# ignore compiled files anywhere
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# ignore packaged files anywhere
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# -------------------------
+# BEGIN Whitelisted Files
+# -------------------------
+
+# this file lets local instance use live uploads (images, etc)
+!wp-content/uploads/
+wp-content/uploads/*
+!wp-content/uploads/.htaccess
+
+#whitelist circleci
+!.circleci/
 
 # track these files, if they exist
 !.lando.yml
+!robots.txt
+!robots-block.txt
+!BingSiteAuth.xml
+!.gitignore
+!.htaccess
+!.editorconfig
+!README.md
+!CHANGELOG.md
+!composer.json
+
+# track favicon files, if they exist
+!android-chrome-*.png
+!apple-touch-icon*.png
+!browserconfig.xml
+!favicon*.png
+!favicon*.ico
+!manifest.json
+!mstile-*.png
+!safari-pinned-tab.svg
